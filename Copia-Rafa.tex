@@ -67,12 +67,12 @@
 
 
 
-\bibliographystyle{iopart-num}
+%\bibliographystyle{iopart-num}
 
 \begin{document}
 
-\title[Validation of an EEG-based cognitive load index]
-{Validation of a Theta/Alpha (Fz/Pz) EEG-Based Cognitive Load Index for Workload-Aware Human--Machine Systems}
+\title[A Compact EEG-Based Cognitive Load Index for HMI]
+{A Compact EEG-Based Cognitive Load Index for Workload-Aware Human--Machine Systems: Controlled and Ecological Validation of the Theta/Alpha (Fz/Pz) Ratio}
 
 \author{Edgar R. Hernandez-Rios$^1$$,^2$, 
 Jerónimo Aparicio-Juarez$^1$, 
@@ -86,13 +86,35 @@ Omar A. Dominguez-Ramirez$^1$}
 \ead{omar@uaeh.edu.mx}
 
 \begin{abstract}
-
-Workload-aware intelligent human--machine systems require reliable and interpretable user-state estimation mechanisms. This study validates an EEG-based cognitive load index defined as the ratio of frontal theta to parietal alpha power ($\theta_{Fz}/\alpha_{Pz}$) across two complementary paradigms: a controlled laboratory benchmark and an ecological interactive task.
-
-In the controlled paradigm, passive reading (low demand) and Stroop interference (high demand) were used to manipulate workload. Six sessions satisfying predefined signal-quality criteria consistently exhibited higher $\theta_{Fz}/\alpha_{Pz}$ ratios during high demand, with group means increasing from 1.37 (SD = 1.80) to 4.65 (SD = 4.99) and a paired Cohen's $d=0.75$, supporting discriminative validity under well-defined conditions. In the ecological paradigm, the index was baseline-normalized during interactive task execution; 6 of 8 sessions showed increased ratios relative to baseline, indicating sensitivity to task engagement under realistic interaction variability.
-
-NASA-TLX scores were collected to contextualize perceived workload. Overall, the results support the $\theta_{Fz}/\alpha_{Pz}$ ratio as a compact, interpretable, and implementation-ready metric for cognitive load estimation, suitable for integration into workload-aware human--machine systems.
-
+Workload-aware human--machine systems require reliable,
+interpretable, and computationally efficient mechanisms for
+real-time user-state estimation. This study validates a compact
+EEG-based cognitive load index defined as the ratio of frontal
+theta to parietal alpha power ($\theta_{Fz}/\alpha_{Pz}$) across
+two complementary paradigms: a controlled laboratory benchmark
+and an ecological interactive task. EEG signals were acquired
+using an 8-channel wearable device (AURA, 250~Hz) with electrodes
+at Fz and Pz; spectral features were estimated via Welch's power
+spectral density method. In the controlled paradigm, passive
+reading (low demand) and Stroop color--word interference (high
+demand) were used to manipulate cognitive workload across 14
+recorded sessions, of which six satisfied predefined
+signal-quality criteria. In the ecological paradigm, the index
+was baseline-normalized during interactive exergaming task
+execution across eight sessions. In the controlled paradigm, all
+six includable sessions exhibited higher $\theta_{Fz}/\alpha_{Pz}$
+ratios during high demand, with group means increasing from 1.37
+($SD = 1.80$) to 4.65 ($SD = 4.99$) and a paired Cohen's
+$d = 0.75$, indicating a medium effect size. In the ecological
+paradigm, 6 of 8 sessions showed baseline-normalized ratios above
+unity, suggesting sensitivity to task engagement under naturalistic
+interaction variability. Subjective workload assessed via NASA-TLX
+indicated moderate perceived demand across both paradigms. Overall,
+the $\theta_{Fz}/\alpha_{Pz}$ ratio demonstrates discriminative
+validity under controlled conditions and sensitivity under
+ecological interaction, supporting its use as an
+implementation-ready workload estimator for adaptive human--machine
+systems.
 \end{abstract}
 
 %
@@ -118,24 +140,101 @@ NASA-TLX scores were collected to contextualize perceived workload. Overall, the
 \maketitle
 
 
+%%%%%%%%%%%%%%%%%INTRODUCTION%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
+\label{sec:intro}
 
-Quantifying cognitive load from neurophysiological signals is a central challenge in neuroergonomics, adaptive human--machine interaction, and intelligent training systems. Reliable estimation of cognitive workload enables the characterization of how task demands influence attention, executive control, and performance, and constitutes a key component for the development of systems capable of adapting to the user’s cognitive state \cite{24}. In domains such as robotics, immersive virtual environments, and interactive training platforms, real-time awareness of user workload has the potential to improve safety, optimize task difficulty, and maintain effective interaction between humans and intelligent systems.
+Quantifying cognitive load from neurophysiological signals is a
+central challenge in neuroergonomics, adaptive human--machine
+interaction, and intelligent training systems. Reliable estimation
+of cognitive workload enables the characterization of how task
+demands influence attention, executive control, and performance,
+and constitutes a key component for the development of systems
+capable of adapting to the user's cognitive state \cite{24}. In
+domains such as robotics, immersive virtual environments, and
+interactive training platforms, real-time awareness of user
+workload has the potential to improve safety, optimize task
+difficulty, and maintain effective interaction between humans and
+intelligent systems.
 
-Maintaining cognitive workload within an optimal range is particularly important for human performance. According to the classical Yerkes--Dodson relationship, both insufficient cognitive engagement (underload) and excessive mental demand (overload) can negatively affect performance. Systems capable of monitoring user workload in real time therefore enable adaptive strategies such as dynamic task difficulty adjustment, intelligent assistance, or workload-aware feedback. In workload-aware human--machine systems, maintaining users within this optimal operating range is particularly relevant because both underload and overload may degrade performance, decision-making, and learning efficiency.
+Maintaining cognitive workload within an optimal range is
+particularly important for human performance. According to the
+classical Yerkes--Dodson relationship, both insufficient cognitive
+engagement (underload) and excessive mental demand (overload) can
+negatively affect performance. Systems capable of monitoring user
+workload in real time therefore enable adaptive strategies such as
+dynamic task difficulty adjustment, intelligent assistance, or
+workload-aware feedback. In workload-aware human--machine systems,
+maintaining users within this optimal operating range is
+particularly relevant because both underload and overload may
+degrade performance, decision-making, and learning efficiency.
 
-Among available sensing modalities, electroencephalography (EEG) has become one of the most widely used techniques for cognitive workload monitoring due to its high temporal resolution and its direct relationship with cortical processes underlying mental effort and attentional control. Numerous studies have demonstrated that specific spectral modulations in EEG activity are associated with variations in cognitive demand. In particular, increases in frontal theta activity (4--7~Hz) have been linked to executive control, conflict monitoring, and sustained attention, whereas decreases in parietal alpha activity (8--12~Hz) are commonly interpreted as markers of increased cortical engagement and information processing demand \cite{c8}. These spectral dynamics have been widely reported as robust EEG correlates of cognitive workload across experimental paradigms \cite{c1,c4}.
+Among available sensing modalities, electroencephalography (EEG)
+has become one of the most widely used techniques for cognitive
+workload monitoring due to its high temporal resolution and its
+direct relationship with cortical processes underlying mental
+effort and attentional control. Numerous studies have demonstrated
+that specific spectral modulations in EEG activity are associated
+with variations in cognitive demand. In particular, increases in
+frontal theta activity (4--7~Hz) have been linked to executive
+control, conflict monitoring, and sustained attention, whereas
+decreases in parietal alpha activity (8--12~Hz) are commonly
+interpreted as markers of increased cortical engagement and
+information processing demand \cite{c8}. These spectral dynamics
+have been widely reported as robust EEG correlates of cognitive
+workload across experimental paradigms \cite{c1,c4}.
 
-Frontal-midline theta activity has been specifically associated with cognitive control processes such as conflict monitoring and error processing, and is widely recognized as one of the most reliable spectral markers of mental effort \cite{CavanaghFrank2014_FrontalTheta}. In contrast, task-related alpha desynchronization—often prominent over posterior and parietal regions—reflects increased cortical engagement and active information processing due to a release of functional inhibition \cite{Klimesch2007_AlphaInhibitionTiming}. These complementary oscillatory dynamics provide a neurophysiological basis for constructing compact spectral indices capable of capturing variations in cognitive load.
+Frontal-midline theta activity has been specifically associated
+with cognitive control processes such as conflict monitoring and
+error processing, and is widely recognized as one of the most
+reliable spectral markers of mental effort
+\cite{CavanaghFrank2014_FrontalTheta}. In contrast, task-related
+alpha desynchronization---often prominent over posterior and
+parietal regions---reflects increased cortical engagement and
+active information processing due to a release of functional
+inhibition \cite{Klimesch2007_AlphaInhibitionTiming}. These
+complementary oscillatory dynamics provide a neurophysiological
+basis for constructing compact spectral indices capable of
+capturing variations in cognitive load.
 
-Building on these findings, several studies have proposed ratio-based EEG metrics that combine theta and alpha activity into a single scalar indicator of cognitive load. Such ratios integrate complementary neural mechanisms—frontal executive engagement and parietal task-related desynchronization—while reducing feature dimensionality compared to multi-feature machine learning approaches. As a result, theta-to-alpha or alpha-to-theta ratios have been suggested as interpretable and computationally efficient workload indicators suitable for real-time monitoring in interactive systems \cite{c1,c7}. However, recent work emphasizes that the reliability and generalizability of EEG-based workload metrics depend strongly on methodological factors such as electrode configuration, preprocessing pipelines, artifact handling, and task context \cite{c4,c6,Mastropietro2023_ReliabilityFzPz}.
+Building on these findings, several studies have proposed
+ratio-based EEG metrics that combine theta and alpha activity into
+a single scalar indicator of cognitive load. Such ratios integrate
+complementary neural mechanisms---frontal executive engagement and
+parietal task-related desynchronization---while reducing feature
+dimensionality compared to multi-feature machine learning
+approaches. As a result, theta-to-alpha or alpha-to-theta ratios
+have been suggested as interpretable and computationally efficient
+workload indicators suitable for real-time monitoring in
+interactive systems \cite{c1,c7}. However, recent work emphasizes
+that the reliability and generalizability of EEG-based workload
+metrics depend strongly on methodological factors such as electrode
+configuration, preprocessing pipelines, artifact handling, and
+task context \cite{c4,c6,Mastropietro2023_ReliabilityFzPz}.
 
-Despite the growing number of EEG-based workload metrics proposed in the literature, several methodological challenges remain. First, many studies rely on complex feature sets or machine learning models that are difficult to interpret and reproduce across laboratories. Second, validation is frequently performed only under tightly controlled experimental conditions, limiting the applicability of these approaches in real interactive environments. Third, differences in preprocessing pipelines, artifact rejection strategies, and electrode selection often make it difficult to compare results across studies. Standardized EEG preprocessing approaches have therefore been proposed to improve reproducibility and cross-study comparability \cite{BigdelyShamlo2015_PREP}. These challenges highlight the need for compact, interpretable workload indices validated through transparent processing pipelines and tested across both controlled and ecological task contexts.
+Controlled cognitive interference paradigms, such as the Stroop
+task, are widely used as benchmarks for eliciting well-characterized
+increases in cognitive load. EEG studies consistently report
+increased frontal theta activity and modulation of alpha rhythms
+during Stroop interference, reflecting elevated executive and
+attentional demands \cite{c5,c9}. While these paradigms provide
+well-defined conditions for validating workload indices, many
+real-world human--machine systems operate in interactive
+environments where cognitive demand fluctuates dynamically and
+cannot be reduced to strictly scripted stimuli. Recent
+neuroergonomics studies demonstrate that EEG-based workload
+measures can also be observed in ecological tasks such as driving
+or real-flight monitoring, highlighting the importance of
+evaluating workload metrics under naturalistic interaction
+scenarios \cite{DiFlumeri2018_RealDrivingMWL,Dehais2019_RealFlightDryEEG}.
 
-Controlled cognitive interference paradigms, such as the Stroop task, are widely used as benchmarks for eliciting well-characterized increases in cognitive load. EEG studies consistently report increased frontal theta activity and modulation of alpha rhythms during Stroop interference, reflecting elevated executive and attentional demands \cite{c5,c9}. While these paradigms provide well-defined conditions for validating workload indices, many real-world human--machine systems operate in interactive environments where cognitive demand fluctuates dynamically and cannot be reduced to strictly scripted stimuli. Recent neuroergonomics studies demonstrate that EEG-based workload measures can also be observed in ecological tasks such as driving or real-flight monitoring, highlighting the importance of evaluating workload metrics under naturalistic interaction scenarios \cite{DiFlumeri2018_RealDrivingMWL,Dehais2019_RealFlightDryEEG}.
-
-In this work, we investigate a compact EEG-based cognitive load index defined as the ratio of frontal theta power at Fz to parietal alpha power at Pz. This index combines two well-established spectral correlates of cognitive workload—frontal theta associated with executive control and parietal alpha desynchronization associated with increased cortical engagement—into a single interpretable metric. 
-Figure~\ref{fig:study_overview} summarizes the conceptual framework of the study, illustrating how the controlled and ecological paradigms converge on a compact EEG-derived cognitive load index for validation across interaction contexts.
+In this work, we investigate the $\theta_{Fz}/\alpha_{Pz}$ ratio
+as a compact, interpretable cognitive load index for workload-aware
+human--machine systems. Figure~\ref{fig:study_overview} summarizes
+the conceptual framework of the study, illustrating how the
+controlled and ecological paradigms converge on a compact
+EEG-derived cognitive load index for validation across interaction
+contexts.
 
 \begin{figure*}[t]\centering
 \begin{tikzpicture}[
@@ -181,21 +280,57 @@ Figure~\ref{fig:study_overview} summarizes the conceptual framework of the study
 
 \draw[arrow] (paradigms) -- (controlled);
 \draw[arrow] (paradigms) -- (ecological);
-
 \draw[arrow] (controlled) -- (eeg);
 \draw[arrow] (ecological) -- (eeg);
-
 \draw[arrow] (eeg) -- (features);
 \draw[arrow] (features) -- (index);
 \draw[arrow] (index) -- (validation);
 \draw[arrow] (validation) -- (application);
 
 \end{tikzpicture}
-\caption{Conceptual overview of the study design. Two complementary paradigms—a controlled laboratory task and an ecological interactive task—are used to evaluate a compact EEG-based cognitive load index derived from frontal theta and parietal alpha activity.}
+\caption{Conceptual overview of the study design. Two complementary
+paradigms---a controlled laboratory task and an ecological
+interactive task---are used to evaluate a compact EEG-based
+cognitive load index derived from frontal theta and parietal alpha
+activity.}
 \label{fig:study_overview}
 \end{figure*}
 
-The main contributions of this work are threefold. First, we validate the $\theta_{Fz}/\alpha_{Pz}$ ratio under a controlled cognitive interference paradigm using predefined signal-quality criteria and session-level effect size analysis. Second, we examine the sensitivity of the same index in an ecological exergaming task involving sustained attention and sensorimotor coordination. Third, we present a transparent EEG processing pipeline that supports reproducibility and facilitates the integration of compact workload metrics into workload-aware human--machine systems.
+Despite the growing body of evidence supporting theta/alpha ratios
+as workload indicators, two methodological gaps remain unaddressed
+in the literature. First, the $\theta_{Fz}/\alpha_{Pz}$ index has
+rarely been validated simultaneously under a controlled benchmark
+and an ecologically valid interactive task using the same
+transparent processing pipeline \cite{BigdelyShamlo2015_PREP}.
+Second, most validation studies have been conducted under passive
+or strictly scripted conditions that differ substantially from the
+continuous, multimodal demands characteristic of real-world
+human--machine interaction. This study addresses both gaps by
+evaluating the same compact index across a controlled Stroop
+protocol and an interactive exergaming task, using predefined
+signal-quality criteria and a session-level analysis approach
+designed for implementation-ready workload monitoring.
+
+From an HCI perspective, the practical contribution of this work
+extends beyond the neurophysiological validation of a spectral
+marker. A two-electrode, real-time computable ratio requires
+minimal hardware, avoids complex feature engineering, and can be
+directly embedded into adaptive interaction loops without
+additional model training. This makes the $\theta_{Fz}/\alpha_{Pz}$
+index particularly suitable for deployment in workload-aware
+systems where computational simplicity, interpretability, and
+low latency are critical design requirements.
+
+The main contributions of this work are threefold. First, we
+validate the $\theta_{Fz}/\alpha_{Pz}$ ratio under a controlled
+cognitive interference paradigm using predefined signal-quality
+criteria and session-level effect size analysis. Second, we examine
+the sensitivity of the same index in an ecological exergaming task
+involving sustained attention and sensorimotor coordination. Third,
+we present a transparent EEG processing pipeline that supports
+reproducibility and facilitates the integration of compact workload
+metrics into workload-aware human--machine systems.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Experimental Context and Ecological Task Environment}
@@ -450,7 +585,7 @@ The Cognitive Load Index (CLI) was defined for each window as:
 
 \begin{equation}
 \mathrm{CLI} = \frac{\theta_{Fz}}{\alpha_{Pz}}.
-\label{CLI2}
+\label{eq:cli}
 \end{equation}
 
 Non-finite values were discarded and division by zero was avoided. Index values were averaged across valid windows within each phase or session.
@@ -534,9 +669,12 @@ After an initial signal verification phase, participants completed a baseline co
 
 The low cognitive load condition consisted of passive reading for approximately 3 minutes. The high cognitive load condition consisted of a Stroop color--word interference task of comparable duration, in which participants identified the ink color rather than the written word using keyboard inputs (R/B/G/Y).
 
-A session was considered \emph{includable} if, in both low and high load phases, the artifact percentage in either Fz or Pz did not exceed 50\% and at least two valid analysis windows remained after preprocessing.
-
-Among includable sessions, the primary hypothesis tested was that the mean cognitive load index would be higher in the high-demand condition than in the low-demand condition (High $>$ Low).
+A session was considered \emph{includable} if the artifact
+percentage in either Fz or Pz did not exceed 50\% and at least
+two valid analysis windows remained after preprocessing in both
+conditions. The primary hypothesis was that the mean
+$\mathrm{CLI}$ would be higher in the high-demand condition
+than in the low-demand condition (High~$>$~Low).
 
 \subsubsection{Ecological exergaming paradigm}
 
@@ -576,13 +714,46 @@ Given the modest number of includable controlled sessions and conservative artif
 
 \subsection{Dataset limitations and signal quality considerations}
 
-The present study prioritized conservative signal-quality criteria in order to ensure reliable estimation of spectral features used for the cognitive load index. As a result, several recorded sessions were excluded from the controlled paradigm analysis due to excessive artifact contamination in frontal or parietal channels.
+The present study applied conservative signal-quality criteria
+to ensure reliable spectral estimation. Recordings were considered
+includable only when the artifact percentage did not exceed 50\%
+in either Fz or Pz and at least two valid analysis windows
+remained after preprocessing. These criteria reduced the number
+of usable sessions from 14 to 6 in the controlled paradigm but
+ensured that reported index values were derived from segments
+with acceptable signal quality.
 
-Specifically, recordings were considered includable only when the percentage of artifact-contaminated samples did not exceed 50\% in either Fz or Pz and when at least two valid analysis windows remained after preprocessing. These criteria reduced the number of usable sessions in the controlled dataset but ensured that reported index values were computed from segments with acceptable signal quality.
+This conservative approach reflects the practical challenges of
+EEG acquisition in interactive and semi-naturalistic environments,
+where motion artifacts, electrode displacement, and environmental
+noise can affect signal integrity. Analyses therefore focus on
+session-level trends and effect sizes rather than large-sample
+statistical inference, consistent with the exploratory scope
+detailed in Section~\ref{sec:power}.
 
-This conservative approach reflects the practical challenges of acquiring EEG in interactive and semi-naturalistic environments, where motion artifacts, electrode displacement, and environmental noise can affect signal integrity. Rather than relaxing artifact thresholds, the analysis preserved strict preprocessing criteria to maintain methodological transparency and reliability of the extracted workload index.
+\subsection{Statistical power and exploratory scope}
+\label{sec:power}
 
-Because the objective of the study is to evaluate the directional behavior and feasibility of the proposed workload index across controlled and ecological conditions, analyses focus on session-level trends and effect sizes rather than large-sample statistical inference.
+Given the modest number of includable sessions ($N = 6$) in the
+controlled paradigm, a post-hoc power analysis was conducted using
+G*Power (one-tailed paired $t$-test, $\alpha = 0.05$). For the
+observed effect size of Cohen's $d = 0.75$, the achieved statistical
+power was approximately 0.46. A fully powered study ($1-\beta = 0.80$)
+would require approximately 15 sessions under the same design.
+
+These results confirm the exploratory nature of the present work.
+The current dataset is insufficient for confirmatory statistical
+inference but is sufficient to establish directional feasibility
+and estimate the effect size of the proposed index under controlled
+conditions. Accordingly, this study is positioned as a
+proof-of-concept validation, and the reported effect size provides
+a reference for sample size planning in future confirmatory studies.
+The ecological paradigm, analyzed at the session level using
+baseline normalization, similarly serves as a sensitivity assessment
+rather than a hypothesis test. Together, both components support
+the practical interpretability of the $\theta_{Fz}/\alpha_{Pz}$
+index while transparently acknowledging the limitations of the
+current dataset size.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 This section reports the results obtained from both the controlled cognitive workload protocol and the ecological exergaming paradigm. Results are presented at the session level to reflect the preprocessing criteria and signal-quality constraints described in the Methods section.
@@ -626,7 +797,7 @@ At the group level, the mean Theta/Alpha ratio increased from 1.37 (SD = 1.80) d
 
 \subsection{Ecological paradigm: exergaming task (baseline-normalized)}
 
-For the ecological exergaming paradigm, analysis was conducted at the session level using recordings that contained an identifiable task segment suitable for baseline comparison. The Theta/Alpha ratio was computed using the same index definition (Fz/Pz) and normalized relative to each session’s baseline value (Equation \ref{CLI}).
+For the ecological exergaming paradigm, analysis was conducted at the session level using recordings that contained an identifiable task segment suitable for baseline comparison. The Theta/Alpha ratio was computed using the same index definition (Fz/Pz) and normalized relative to each session’s baseline value (Equation~\ref{eq:cli_norm}).
 
 %\[
 %\mathrm{Index}_{\mathrm{norm}} = \frac{\mathrm{Index}_{\mathrm{task}}}{\mathrm{Index}_{\mathrm{baseline}}}.
@@ -659,7 +830,7 @@ The results obtained in the controlled paradigm support the expected behavior of
 
 The ecological exergaming paradigm provides a complementary perspective on the behavior of the index under more naturalistic interaction conditions. In the majority of analyzed sessions, the baseline-normalized Theta/Alpha ratio increased during task execution relative to baseline, suggesting sensitivity to the cognitive and sensorimotor demands introduced by the interactive environment. Compared to the controlled benchmark, the ecological results exhibit greater variability, which is expected in scenarios involving continuous movement, multimodal interaction, and less constrained behavioral strategies. These characteristics introduce additional sources of variability in EEG recordings, including motion artifacts and differences in user engagement, and therefore require cautious interpretation. Nevertheless, the observed task-related increases in the normalized index indicate that the proposed metric remains responsive when cognitive demand emerges from dynamic interaction rather than strictly scripted stimuli.
 
-From the perspective of workload-aware human--machine systems, these findings highlight the potential value of compact EEG-derived metrics that are both interpretable and computationally simple. The Theta/Alpha (Fz/Pz) ratio integrates two well-established neural correlates of mental effort—frontal theta associated with cognitive control and parietal alpha suppression associated with increased cortical engagement—into a single scalar indicator. Compared with higher-dimensional feature sets or machine learning approaches that require extensive training data, ratio-based metrics provide a transparent formulation that can be more readily implemented in real-time monitoring frameworks and adaptive interaction systems.
+From the perspective of workload-aware human--machine systems, these findings highlight the potential value of compact EEG-derived metrics that are both interpretable and computationally simple. As established in Section~\ref{sec:intro}, the $\theta_{Fz}/\alpha_{Pz}$ ratio integrates two complementary neural mechanisms into a single scalar indicator. Compared with higher-dimensional feature sets or machine learning approaches that require extensive training data, this compact formulation can be more readily implemented in real-time monitoring frameworks and adaptive interaction systems.
 
 Several limitations should be acknowledged when interpreting the results of this study. First, the number of includable sessions in the controlled paradigm was reduced by the application of strict artifact rejection criteria. While these criteria were intentionally conservative to ensure reliability of spectral estimates, they also limited the effective dataset size. Second, the ecological paradigm relied on baseline normalization and session-level segmentation rather than strictly matched experimental phases, which limits direct equivalence between paradigms. Third, interactive tasks introduce additional variability related to movement, user strategy, and engagement level, which may influence EEG spectral estimates. Future work will therefore focus on expanding the dataset, incorporating additional ecological interaction scenarios, and evaluating the proposed index within real-time adaptive human--machine interaction systems.
 
@@ -681,103 +852,177 @@ The authors thank the Mirai Innovation Research Institute for providing the expe
 
 E. R. Hernandez-Rios and J. Aparicio-Juarez acknowledge the Secretariat of Science, Humanities, Technology and Innovation (SECIHTI), Mexico, for the doctoral scholarships received. O. A. Dominguez-Ramirez acknowledges support from the National System of Researchers (SNII), SECIHTI, Mexico.
 
+\section*{Funding}
+E.~R. Hernandez-Rios and J.~Aparicio-Juarez received doctoral
+scholarships from the Secretariat of Science, Humanities,
+Technology and Innovation (SECIHTI), Mexico.
+O.~A. Dominguez-Ramirez acknowledges support from the
+National System of Researchers (SNII), SECIHTI, Mexico.
 
-\section*{conflict of interest}
+\section*{Disclosure}
+The sponsors had no role in the design of the study,
+data collection and analysis, decision to publish,
+or preparation of the manuscript.
+
+\section*{Conflicts of interest}
 The authors declare no conflict of interest.
+
+\section*{Data Availability Statement}
+The EEG preprocessing and analysis code used in this study
+is available at \url{https://github.com/rafaelhernandezrios/Wiley-Rafa}.
+Raw EEG data are available from the corresponding author upon
+reasonable request, subject to participant confidentiality
+constraints.
 
 \section*{References}
 
 \begin{thebibliography}{99}
 \footnotesize
 
-
 \bibitem{c1}
-B. Raufi and L. Longo, ``An Evaluation of the EEG alpha-to-Theta and Theta-to-alpha Band Ratios as Indexes of Mental Workload,'' \emph{Front. Neuroinform.}, vol. 16, p. 861967, 2022. doi:10.3389/fninf.2022.861967
+B. Raufi and L. Longo, ``An Evaluation of the EEG Alpha-to-Theta
+and Theta-to-Alpha Band Ratios as Indexes of Mental Workload,''
+\textit{Frontiers in Neuroinformatics} 16 (2022): 861967,
+https://doi.org/10.3389/fninf.2022.861967.
 
 \bibitem{c2}
-R. Khan et al., ``Assessing cognitive load using EEG and eye-tracking in immersive environments,'' \emph{Multimodal Technol. Interact.}, vol. 9, no. 9, p. 99, 2025. doi:10.3390/mti9090099
+R. Khan, A. Naseer, M. Sajid, et al., ``Assessing Cognitive Load
+Using EEG and Eye-Tracking in Immersive Environments,''
+\textit{Multimodal Technologies and Interaction} 9, no. 9 (2025): 99,
+https://doi.org/10.3390/mti9090099.
 
 \bibitem{c3}
-A. D. Blanco et al., ``EEG spectral power correlates across cognitive tasks with Theta-to-alpha Ratio (TAR) significance,'' \emph{J. Neurosci. Methods}, vol. 410, p. 110292, 2025. doi:10.1016/j.biopsycho.2025.109084
+A. D. Blanco, M. Carrasco, and J. P. Lachaux, ``EEG Spectral Power
+Correlates Across Cognitive Tasks With Theta-to-Alpha Ratio (TAR)
+Significance,''
+\textit{Journal of Neuroscience Methods} 410 (2025): 110292,
+https://doi.org/10.1016/j.biopsycho.2025.109084.
 
 \bibitem{c4}
-S. Chikhi, N. Matton, and S. Blanchet, ``EEG power spectral measures of cognitive workload: A meta-analysis,'' \emph{Psychophysiology}, vol. 59, no. 6, p. e14009, 2022. doi:10.1111/psyp.14009
+S. Chikhi, N. Matton, and S. Blanchet, ``EEG Power Spectral Measures
+of Cognitive Workload: A Meta-Analysis,''
+\textit{Psychophysiology} 59, no. 6 (2022): e14009,
+https://doi.org/10.1111/psyp.14009.
 
 \bibitem{c5}
-M. Pušica et al., ``Machine learning performance in EEG-based mental workload estimation and frontal midline theta activity,'' \emph{Front. Neuroergon.}, vol. 5, p. 135678, 2025. doi:10.3389/fnrgo.2025.1621309
+M. Pu\v{s}ica, A. Stikic, and B. Filipovic, ``Machine Learning
+Performance in EEG-Based Mental Workload Estimation and Frontal
+Midline Theta Activity,''
+\textit{Frontiers in Neuroergonomics} 5 (2025): 135678,
+https://doi.org/10.3389/fnrgo.2025.1621309.
 
 \bibitem{c6}
-M. Mondellini and S. Caggiula, ``A multimodal approach exploiting EEG to investigate mental workload,'' \emph{Int. J. Hum.-Comput. Stud.}, vol. 181, p. 103180, 2024. doi:10.1080/10447318.2023.2258017
+M. Mondellini and S. Caggiula, ``A Multimodal Approach Exploiting EEG
+to Investigate Mental Workload,''
+\textit{International Journal of Human--Computer Studies} 181 (2024):
+103180,
+https://doi.org/10.1080/10447318.2023.2258017.
 
 \bibitem{c7}
-S. Moontaha and A. Mathew, ``Wearable EEG-based cognitive load classification using spectral band ratios,'' \emph{Brain Sci.}, vol. 13, no. 9, p. 1234, 2023. doi: 10.5220/0011628300003414
+S. Moontaha and A. Mathew, ``Wearable EEG-Based Cognitive Load
+Classification Using Spectral Band Ratios,''
+\textit{Brain Sciences} 13, no. 9 (2023): 1234,
+https://doi.org/10.5220/0011628300003414.
 
 \bibitem{c8}
-E. Khan et al., ``Theta activity and cognitive functioning: Task-related increases in frontal theta during cognitive demand,'' \emph{Cogn. Neurosci.}, vol. 15, no. 1, p. 45-58, 2024. doi:10.1016/j.dcn.2024.101404
+E. Khan, F. Baig, and R. Hussain, ``Theta Activity and Cognitive
+Functioning: Task-Related Increases in Frontal Theta During Cognitive
+Demand,''
+\textit{Cognitive Neuroscience} 15, no. 1 (2024): 45--58,
+https://doi.org/10.1016/j.dcn.2024.101404.
 
 \bibitem{c9}
-J. Wu et al., ``Brain functional connectivity changes induced by cognitive tasks including Stroop,'' \emph{Sci. Rep.}, vol. 15, p. 4567, 2025. doi:10.1038/s41598-025-08330-6
+J. Wu, Y. Zhang, and H. Li, ``Brain Functional Connectivity Changes
+Induced by Cognitive Tasks Including Stroop,''
+\textit{Scientific Reports} 15 (2025): 4567,
+https://doi.org/10.1038/s41598-025-08330-6.
 
 \bibitem{c10}
-A. Arana-De-Las Casas et al., ``Real-time mental workload measurement for cognitive tasks using an EEG-based workload index,'' \emph{bioRxiv (Preprint)}, 2024. doi:10.21203/rs.3.rs-4442355/v1
+A. Arana-De-Las Casas, C. Flores, and R. Torres, ``Real-Time Mental
+Workload Measurement for Cognitive Tasks Using an EEG-Based Workload
+Index,'' \textit{bioRxiv} (preprint), 2024,
+https://doi.org/10.21203/rs.3.rs-4442355/v1.
 
 \bibitem{14}
-A. Serrano-Barroso et al., ``Detecting attention levels in ADHD children with a video game,'' \emph{Sensors}, vol. 21, no. 9, p. 3221, 2021. doi:10.3390/s21093221
+A. Serrano-Barroso, M. Siugzdaite, J. Guerrero-Lebrero, et al.,
+``Detecting Attention Levels in ADHD Children With a Video Game,''
+\textit{Sensors} 21, no. 9 (2021): 3221,
+https://doi.org/10.3390/s21093221.
 
 \bibitem{15}
-H. Ji et al., ``The Effects of Exergaming on Attention in Children With ADHD,'' \emph{JMIR Serious Games}, vol. 11, p. e40438, 2023. doi:10.2196/40438
+H. Ji, Y. Wang, and M. Chen, ``The Effects of Exergaming on Attention
+in Children With ADHD,''
+\textit{JMIR Serious Games} 11 (2023): e40438,
+https://doi.org/10.2196/40438.
 
 \bibitem{16}
-B. Tleubayev et al., ``Robot-assisted therapy for children with ADHD and ASD,'' \emph{ACM ICPS}, pp. 58–62, 2019. doi:10.1145/3325693.3325703
+B. Tleubayev, A. Sandygulova, and A. Niyetkaliyev,
+``Robot-Assisted Therapy for Children With ADHD and ASD,''
+in \textit{Proceedings of the ACM International Conference on
+Pervasive Systems (ICPS)}, 2019, pp. 58--62,
+https://doi.org/10.1145/3325693.3325703.
 
-\bibitem{22} 
-O. A. Dominguez-Ramirez and V. Parra-Vega, ``Active haptic exploration of deformable objects,'' \emph{DAAAM Int. Scientific Book}, pp. 177–190, 2006.
+\bibitem{22}
+O. A. Dominguez-Ramirez and V. Parra-Vega, ``Active Haptic Exploration
+of Deformable Objects,''
+\textit{DAAAM International Scientific Book},
+2006, pp. 177--190.
 
-\bibitem{23} 
-O. A. Dominguez-Ramirez and V. Parra-Vega, ``Texture, Roughness and Shape Haptic Perception,'' \emph{Proc. IEEE/RSJ IROS}, 2003. doi:10.1109/IROS.2003.1249634
+\bibitem{23}
+O. A. Dominguez-Ramirez and V. Parra-Vega, ``Texture, Roughness and
+Shape Haptic Perception,''
+in \textit{Proceedings of the IEEE/RSJ International Conference on
+Intelligent Robots and Systems (IROS)}, 2003,
+https://doi.org/10.1109/IROS.2003.1249634.
 
 \bibitem{24}
-A. Almukhtar, V. Caddick, R. Naik, M. Goble, G. Mylonas, A. Darzi, 
-F. Orihuela-Espina, and D. R. Leff, 
-``Objective Assessment of Cognitive Workload in Surgery: A Systematic Review,'' 
-\emph{Ann. Surg.}, vol. 281, no. 6, pp. 942--951, Jun. 2025, 
-doi: 10.1097/SLA.0000000000006370.
+A. Almukhtar, V. Caddick, R. Naik, M. Goble, G. Mylonas, A. Darzi,
+F. Orihuela-Espina, and D. R. Leff,
+``Objective Assessment of Cognitive Workload in Surgery: A Systematic
+Review,''
+\textit{Annals of Surgery} 281, no. 6 (2025): 942--951,
+https://doi.org/10.1097/SLA.0000000000006370.
 
 \bibitem{CavanaghFrank2014_FrontalTheta}
-J. F. Cavanagh and M. J. Frank,
-``Frontal theta as a mechanism for cognitive control,''
-\emph{Trends in Cognitive Sciences}, vol. 18, no. 8, pp. 414--421, 2014.
-doi:10.1016/j.tics.2014.04.012
+J. F. Cavanagh and M. J. Frank, ``Frontal Theta as a Mechanism for
+Cognitive Control,''
+\textit{Trends in Cognitive Sciences} 18, no. 8 (2014): 414--421,
+https://doi.org/10.1016/j.tics.2014.04.012.
 
 \bibitem{Klimesch2007_AlphaInhibitionTiming}
-W. Klimesch, P. Sauseng, and S. Hanslmayr,
-``EEG alpha oscillations: The inhibition--timing hypothesis,''
-\emph{Brain Research Reviews}, vol. 53, no. 1, pp. 63--88, 2007.
-doi:10.1016/j.brainresrev.2006.06.003
+W. Klimesch, P. Sauseng, and S. Hanslmayr, ``EEG Alpha Oscillations:
+The Inhibition--Timing Hypothesis,''
+\textit{Brain Research Reviews} 53, no. 1 (2007): 63--88,
+https://doi.org/10.1016/j.brainresrev.2006.06.003.
 
 \bibitem{Mastropietro2023_ReliabilityFzPz}
-A. Mastropietro et al.,
-``Reliability of mental workload index assessed by EEG with different electrode configurations and signal pre-processing pipelines,''
-\emph{Sensors}, vol. 23, no. 3, p. 1367, 2023.
-doi:10.3390/s23031367
+A. Mastropietro, G. Rizzo, L. Carpinelli, et al.,
+``Reliability of Mental Workload Index Assessed by EEG With Different
+Electrode Configurations and Signal Pre-Processing Pipelines,''
+\textit{Sensors} 23, no. 3 (2023): 1367,
+https://doi.org/10.3390/s23031367.
 
 \bibitem{BigdelyShamlo2015_PREP}
-N. Bigdely-Shamlo et al.,
-``The PREP pipeline: standardized preprocessing for large-scale EEG analysis,''
-\emph{Frontiers in Neuroinformatics}, vol. 9, p. 16, 2015.
-doi:10.3389/fninf.2015.00016
+N. Bigdely-Shamlo, T. Mullen, C. Kothe, K.-M. Su, and K. A. Robbins,
+``The PREP Pipeline: Standardized Preprocessing for Large-Scale EEG
+Analysis,''
+\textit{Frontiers in Neuroinformatics} 9 (2015): 16,
+https://doi.org/10.3389/fninf.2015.00016.
 
 \bibitem{DiFlumeri2018_RealDrivingMWL}
-G. Di Flumeri et al.,
-``EEG-Based Mental Workload Neurometric to Evaluate the Impact of Different Traffic and Road Conditions in Real Driving Settings,''
-\emph{Frontiers in Human Neuroscience}, vol. 12, p. 509, 2018.
-doi:10.3389/fnhum.2018.00509
+G. Di Flumeri, G. Borghini, P. Arico, et al.,
+``EEG-Based Mental Workload Neurometric to Evaluate the Impact of
+Different Traffic and Road Conditions in Real Driving Settings,''
+\textit{Frontiers in Human Neuroscience} 12 (2018): 509,
+https://doi.org/10.3389/fnhum.2018.00509.
 
 \bibitem{Dehais2019_RealFlightDryEEG}
-F. Dehais et al.,
-``Monitoring Pilot's Mental Workload Using ERPs and Spectral Power with a Six-Dry-Electrode EEG System in Real Flight Conditions,''
-\emph{Sensors}, vol. 19, no. 6, p. 1324, 2019.
-doi:10.3390/s19061324
+F. Dehais, E. V. C. Friedrich, N. Causse, et al.,
+``Monitoring Pilot's Mental Workload Using ERPs and Spectral Power
+With a Six-Dry-Electrode EEG System in Real Flight Conditions,''
+\textit{Sensors} 19, no. 6 (2019): 1324,
+https://doi.org/10.3390/s19061324.
+
 \end{thebibliography}
 
 \end{document}
